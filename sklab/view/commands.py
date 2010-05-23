@@ -11,12 +11,36 @@ __maintainer__ = 'Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'
 __credits__ = ['Cezary Bartoszuk']
 
 
-class BaseCommand:
+class BaseCommand(object):
+
+    def __init__(self, client_object):
+        '''Creates `BaseCommand` instance with given `client_object`.'''
+
+        object.__init__(self)
+        self.client = client_object
+
+
+class ConnCommand(BaseCommand):
 
     pass
 
 
-class ConnCommand(BaseCommand):
+class SignInCommand(BaseCommand):
+
+    pass
+
+
+class SignOutCommand(BaseCommand):
+
+    pass
+
+
+class ReceiveCommand(BaseCommand):
+
+    pass
+
+
+class RegisterUserCommand(BaseCommand):
 
     pass
 

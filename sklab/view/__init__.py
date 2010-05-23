@@ -37,12 +37,12 @@ class TermClient(cmd.Cmd):
 
     @error_handler
     @argument_extractor
-    def do_conn(self, ip, port=Config.defaul_port):
-        '''Usage: conn ip [port]
+    def do_conn(self, ip, port=Config.default_port):
+        '''Usage: conn ip [--port=port]
              ip - IPv4 address (ex. 192.168.1.1)
              port - the other client's listening port
         '''
-        command = ConnCommand()
+        command = ConnCommand(self.controller)
         print "IP: ", ip, "; Port: ", port
         #self.client.connect(**command.output_args)
 
