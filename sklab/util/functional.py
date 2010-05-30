@@ -50,3 +50,15 @@ def parameterizable_decorator(decorator):
                     decorator(*((fn,) + args), **kwargs)
 
     return decorator_wrapper
+
+
+def memoized(fn):
+    """Simple wrapper that adds result caching for argument-less functions."""
+    cache = []
+    @functools.wraps(fn)
+    def memoizer():
+        if not cache:
+            cache.append(fn())
+        return cache[0]
+    return memoizer
+
