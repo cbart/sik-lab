@@ -17,10 +17,9 @@ class RPCClient(object):
 
         self.server = xmlrpclib.Server(address)
 
-    def call_action(self, method_name, **kwargs):
+    def call_action(self, method_name, *args, **kwargs):
 
-        rpc_remote_object = getattr(self.server, self.object_name)
-        res = getattr(rpc_remote_object, method_name)(**kwargs)
+        res = getattr(self.server, method_name)(*args, **kwargs)
         return res['result']
 
 

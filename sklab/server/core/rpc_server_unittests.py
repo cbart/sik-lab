@@ -5,7 +5,6 @@ from nose.tools import *
 import unittest
 import functools
 import xmlrpclib
-import socket
 
 from sklab.core.test_base import \
         TestCase
@@ -13,6 +12,8 @@ from sklab.server.core.rpc_server import \
         RPCServer
 from sklab.server.core.rpc_mock import \
         RPCMock, _DEFAULT_PORT as _DEFAULT_MOCK_PORT
+from sklab.server.util import \
+        findPort
 from sklab.server.core.rpc_unittests_generic import \
         TestRPCServerInstanceMixin
 
@@ -32,14 +33,11 @@ class UnitRPCServerMixin(object):
     _DEFAULT_PORT = _DEFAULT_MOCK_PORT
 
     _SERVER_HOST = 'localhost'
-    _SERVER_PORT = 10099
+    _SERVER_PORT = None
 
     def setUp_1999_findFreshPort(self):
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind(('', 0))
-        self._SERVER_PORT = sock.getsockname()[1]
-
+        self._SERVER_PORT = findPort()
 
     def setUp_2000_makeRPCInstance(self):
 
@@ -84,13 +82,6 @@ class TestRPCServerInstance(
 
     pass
 
-class Test(TestCase):
-
-    def test(self):
-
-        rpc = RPCServer('localhost', 10235, RPCMock())
-        rpc.run()
-        rpc.stop()
 
 if __name__ == '__main__':
     unittest.main()

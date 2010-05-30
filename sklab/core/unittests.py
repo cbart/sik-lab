@@ -3,7 +3,17 @@
 
 from nose.tools import *
 import unittest
-from sklab.core import P2PController, ControllerError
+import xmlrpclib
+
+from sklab.core.test_base import TestCase
+from sklab.core import P2PController, ControllerError, RPCClient
+from sklab.server.core.rpc_server import \
+        RPCServer
+from sklab.server.core.rpc_mock import \
+        RPCMock, _DEFAULT_PORT as _DEFAULT_MOCK_PORT
+from sklab.server.util import \
+        findPort
+
 
 __maintainer__ = 'Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'
 __credits__ = 'Cezary Bartoszuk'
@@ -91,7 +101,7 @@ _CONTENT = '''
 '''
 
 
-class TestConnectedAndSignedIn(unittest.TestCase):
+class TestConnectedAndSignedIn(TestCase):
 
     def setUp(self):
 
@@ -136,7 +146,7 @@ class TestConnectedAndSignedIn(unittest.TestCase):
         self.controller = None
 
 
-class TestConnectedButNotSignedIn(unittest.TestCase):
+class TestConnectedButNotSignedIn(TestCase):
 
     def setUp(self):
 
@@ -182,7 +192,7 @@ class TestConnectedButNotSignedIn(unittest.TestCase):
         self.controller = None
 
 
-class TestNotConnected(unittest.TestCase):
+class TestNotConnected(TestCase):
 
     def setUp(self):
 
@@ -229,7 +239,7 @@ class TestNotConnected(unittest.TestCase):
         self.controller = None
 
 
-class TestRegistrationEnabled(unittest.TestCase):
+class TestRegistrationEnabled(TestCase):
 
     def setUp(self):
 
@@ -248,7 +258,7 @@ class TestRegistrationEnabled(unittest.TestCase):
         self.controller = None
 
 
-class TestRegistrationDisabled(unittest.TestCase):
+class TestRegistrationDisabled(TestCase):
 
     def setUp(self):
 
@@ -268,7 +278,7 @@ class TestRegistrationDisabled(unittest.TestCase):
         self.controller = None
 
 
-class TestSendingEnabled(unittest.TestCase):
+class TestSendingEnabled(TestCase):
 
     def setUp(self):
 
@@ -288,7 +298,7 @@ class TestSendingEnabled(unittest.TestCase):
         self.controller = None
 
 
-class TestSendingDisabled(unittest.TestCase):
+class TestSendingDisabled(TestCase):
 
     def setUp(self):
 
@@ -309,7 +319,7 @@ class TestSendingDisabled(unittest.TestCase):
         self.controller = None
 
 
-class TestReceiveOneMessage(unittest.TestCase):
+class TestReceiveOneMessage(TestCase):
 
     def setUp(self):
 
@@ -339,7 +349,7 @@ class TestReceiveOneMessage(unittest.TestCase):
         self.controller = None
 
 
-class TestReceiveNoMessages(unittest.TestCase):
+class TestReceiveNoMessages(TestCase):
 
     def setUp(self):
 
@@ -358,7 +368,7 @@ class TestReceiveNoMessages(unittest.TestCase):
         self.controller = None
 
 
-class TestSignedInShutdown(unittest.TestCase):
+class TestSignedInShutdown(TestCase):
 
     def setUp(self):
 
@@ -378,7 +388,7 @@ class TestSignedInShutdown(unittest.TestCase):
         self.controller = None
 
 
-class TestConnectedButNotSignedInShutdown(unittest.TestCase):
+class TestConnectedButNotSignedInShutdown(TestCase):
 
     def setUp(self):
 
@@ -398,7 +408,7 @@ class TestConnectedButNotSignedInShutdown(unittest.TestCase):
         self.controller = None
 
 
-class TestDisconnectedShutdown(unittest.TestCase):
+class TestDisconnectedShutdown(TestCase):
 
     def setUp(self):
 
@@ -419,19 +429,57 @@ class TestDisconnectedShutdown(unittest.TestCase):
 
 
 
-class RPCClientTest(unittest.TestCase):
+class TestRPCClient(TestCase):
 
-    def setUp(self):
+    _SERVER_HOST = 'localhost'
+    _SERVER_PORT = None
 
-        pass
-        # mock server stand up
+    _LOGIN = 'my_secret_login'
+    _PASSWORD = 'my_secret_password'
+    _IP = '192.168.0.1'
+    _PORT = 11381
 
-    def tearDown(self):
+    def setUp_1999_findFreshPort(self):
 
-        pass
-        # mock server shut down
+        self._SERVER_PORT = findPort()
 
-#TODO: mock test
+    def tearDown_1999_findFreshPort(self):
+
+        self._SERVER_PORT = None
+
+    def setUp_2000_rpcServer(self):
+
+        self.rpc_mock_instance = RPCMock()
+        self.rpc_server_instance = RPCServer(
+                self._SERVER_HOST,
+                self._SERVER_PORT,
+                self.rpc_mock_instance)
+        self.rpc_server_instance.run()
+
+    def tearDown_2000_rpcServer(self):
+
+        self.rpc_client = None
+        self.rpc_server_instance.stop()
+        self.rpc_server_instance = None
+        self.rpc_mock_instance = None
+
+    def setUp_2001_rpcClient(self):
+
+        self.rpc_client = RPCClient(
+                "http://%s:%d/" % (self._SERVER_HOST, self._SERVER_PORT))
+
+    def tearDown_2001_rpcClient(self):
+
+        self.rpc_client = None
+
+    def testIsConnected(self):
+
+        self.assertFalse(self.rpc_client.call_action('isConnected'))
+        self.assertTrue(self.rpc_client.call_action('connect',
+            self._IP, self._PORT))
+        self.assertTrue(self.rpc_client.call_action('isConnected'))
+        self.assertTrue(self.rpc_client.call_action('disconnect'))
+        self.assertFalse(self.rpc_client.call_action('isConnected'))
 
 if __name__ == '__main__':
     unittest.main()
