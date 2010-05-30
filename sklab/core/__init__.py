@@ -12,6 +12,8 @@ class ControllerError(StandardError):
 
 class P2PController:
 
+    connection = None
+
     def assertNotConnected(self):
 
         if self.connection is not None:
