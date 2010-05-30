@@ -2,12 +2,12 @@
 
 import sys
 
-import sklab.server.core as core_service
+import sklab.server.core
 
 def runCoreService(port, port2=1138):
-    core_service.set_up(port, port2)
-    core_service.runRPCServer()
-    core_service.runMain()
+    core.set_up(port, port2)
+    core.runRPCServer()
+    core.runMain()
 
 if __name__ == '__main__':
     runCoreService(sys.argv[1])

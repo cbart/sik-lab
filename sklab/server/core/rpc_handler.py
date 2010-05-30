@@ -1,34 +1,37 @@
 from sklab.server.core import CoreService
 
 def rpc_connect(ip, port):
-    return {'result': false}
+    return {'result': False}
 
 def rpc_disconnect():
-    return {'result': false}
+    return {'result': False}
 
 def rpc_isConnected():
-    return {'result': false}
+    return {'result': False}
 
 def rpc_signIn(login, password):
-    return {'result': false}
+    return {'result': False}
 
 def rpc_signOut():
-    return {'result': false}
+    return {'result': False}
 
 def rpc_isSignedIn():
-    return {'result': false}
+    return {'result': False}
 
 def rpc_setPort(port):
-    return {'result': false}
+    return {'result': False}
 
 def rpc_getPort():
     return {'result': CoreService._outer_port}
 
 def rpc_registerUser(login, password):
-    return {'result': false}
+    return {'result': False}
 
 def rpc_send(login, content):
-    return {'result': false}
+    return {'result': False}
 
 def rpc_receive():
     return {'result': []}
+
+def rpc_receive():
+    return {'result': True}
