@@ -1,5 +1,7 @@
 ''' Defining states for state machine '''
 
+from sklab.server.state_machine import *
+
 class BaseState(object):
     def exit(self):
         pass
@@ -8,62 +10,61 @@ class BaseState(object):
     def handle_message(self, msg):
         return msg.execute(self)
     def handle_rpc_connect(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_disconnect(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_isConnected(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_signIn(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_signOut(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_isSignedIn(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_setPort(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_getPort(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_registerUser(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_send(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_receive(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_rpc_shutdown(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_connectionRequestMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_connectAckMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_doesUserExistMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_userExistsMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_isUserActiveMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_userActiveMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_mailSearchMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_mailMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_damageSuccessorRequestMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_damageSuccessorInfoMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_damageChangeSpareSuccessorMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_damageFixAckMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_shutdownChangeSuccessorMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_shutdownChangeSpareSuccessorMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_shutdownAckMessage(self, msg):
-        pass
+        raise IllegalStateException(self)
     def handle_newSpareSuccessor(self, msg):
-        pass
+        raise IllegalStateException(self)
 
-    
 class OfflineState(BaseState):
     pass

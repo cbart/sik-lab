@@ -2,6 +2,11 @@
 
 from sklab.server.state_machine.states import *
 
+class IllegalStateException(StandardError):
+    def __init__(self, state):
+        super(IllegalStateException, self).__init__()
+        self.state = state
+
 _current_state = OfflineState()
 
 def processMessage(msg):
