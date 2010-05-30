@@ -39,3 +39,7 @@ def main():
         rpc_client = RPCClient('http://localhost:' + rpc_port)
         client = TermClient(P2PController(rpc_client))
         client.cmdloop()
+
+if __name__ == '__main__':
+
+    main()

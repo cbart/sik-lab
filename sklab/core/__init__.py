@@ -1,6 +1,5 @@
 '''Core modules.'''
 
-from sklib.util.functional import memoized
 import xmlrpclib
 
 __maintainer__ = 'Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'
