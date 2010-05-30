@@ -4,6 +4,7 @@
 
 import sys
 import os.path
+import getopt
 
 
 __author__ = '''Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'''
@@ -16,13 +17,25 @@ if __name__ == '__main__':
         )
     )
 
-
 from sklab.view import TermClient
-from sklab.core import P2PController
+from sklab.core import P2PController, RPCClient
 
+def main():
 
-if __name__ == '__main__':
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'h', ['help'])
+    except getopt.error as err:
+        print "For help: use --help."
+        sys.exit(2)
 
-    client = TermClient(P2PController())
-    client.cmdloop()
-
+    if len(args) < 1:
+        print "Please type in rpc port."
+        sys.exit(3)
+    elif len(args) > 1:
+        print "Too manu arguments, only one expected."
+        sys.exit(4)
+    else:
+        rpc_port = args[0]
+        rpc_client = RPCClient('http://localhost:' + rpc_port)
+        client = TermClient(P2PController(rpc_client))
+        client.cmdloop()
