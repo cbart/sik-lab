@@ -52,6 +52,66 @@ def parameterizable_decorator(decorator):
     return decorator_wrapper
 
 
+def inject_function_before(to_inject):
+    """A decorator, which injects a call to the specified function before the
+       decorated method is called.
+
+       Injected function is called with no arguments except self.
+    """
+
+    def decorator(fn):
+        @functools.wraps(fn)
+        def decorated(self, *args, **kwargs):
+            to_inject(self)
+            return fn(self, *args, **kwargs)
+        return decorated
+    return decorator
+
+
+def oneshot(fn):
+    """A decorator, which make sure, that the method is called only once (per
+       object instance).  Subsequent calls return None without calling the
+       decorated function."""
+
+    attr_name = '__%d_called' % id(fn)
+
+    @functools.wraps(fn)
+    def decorated(self, *args, **kwargs):
+        if attr_name in self.__dict__:
+            return None
+        self.__dict__[attr_name] = True
+        return fn(self, *args, **kwargs)
+    decorated._oneshot = True
+    decorated._oneshotAttributeName = attr_name
+
+    return decorated
+
+
+def reset_oneshot(bound_method):
+    assert bound_method._oneshot, \
+            'Called @reset_oneshot on a non-decorated method'
+
+    self = bound_method.im_self
+    self.__dict__.pop(bound_method._oneshotAttributeName, None)
+
+
+def inject_function_after(to_inject):
+    """A decorator, which injects a call to the specified method after the
+       decorated method is called.
+
+       Injected method is called with no arguments except self.
+    """
+
+    def decorator(fn):
+        @functools.wraps(fn)
+        def decorated(self, *args, **kwargs):
+            ret = fn(self, *args, **kwargs)
+            to_inject(self)
+            return ret
+        return decorated
+    return decorator
+
+
 def memoized(fn):
     """Simple wrapper that adds result caching for argument-less functions."""
     cache = []
