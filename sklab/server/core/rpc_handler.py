@@ -33,5 +33,7 @@ def rpc_send(login, content):
 def rpc_receive():
     return {'result': []}
 
-def rpc_receive():
+def rpc_shutdown():
+    CoreService._rpc_server.shutdown()
+    CoreService._rpc_server_thread.join()
     return {'result': True}
