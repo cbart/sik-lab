@@ -68,3 +68,15 @@ class BaseState(object):
 
 class OfflineState(BaseState):
     pass
+
+class WaitingForConnectionState(BaseState):
+    pass
+
+class ActiveState(BaseState):
+    pass
+
+class DamagedState(BaseState):
+    pass
+
+class ShutdownState(BaseState):
+    pass
