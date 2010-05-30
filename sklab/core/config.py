@@ -21,6 +21,8 @@ _TIMESTAMP_MINUTE = 5
 class Config:
     '''Application configuration object.'''
 
+    self_ip = '127.0.0.1'
+
     default_port = 1138
 
     timeout = 10

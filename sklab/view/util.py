@@ -4,6 +4,7 @@
 import functools
 import shlex
 import sklab.util.functional as functional
+from sklab.core import ControllerError
 
 __maintainer__ = 'Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'
 __credits__ = ['Cezary Bartoszuk']
@@ -27,8 +28,10 @@ def error_handler(fn):
     def wrapped(self, *args, **kwargs):
         try:
             fn(self, *args, **kwargs)
-        except ArgumentError as le:
-            self._error(str(le))
+        except (ArgumentError, ControllerError) as e:
+            self._error(str(e))
+        except NotImplementedError as nie:
+            print "Method is not implemented yet."
 
     return wrapped
 

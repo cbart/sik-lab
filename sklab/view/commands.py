@@ -11,18 +11,35 @@ __maintainer__ = 'Cezary Bartoszuk <cbart@students.mimuw.edu.pl>'
 __credits__ = ['Cezary Bartoszuk']
 
 
+__all__ = ['argument_extractor',
+        'ConnCommand',
+        'SignInCommand',
+        'SignOutCommand',
+        'SendCommand',
+        'ReceiveCommand',
+        'RegisterUserCommand',
+        'ExitCommand',
+        ]
+
 class BaseCommand(object):
 
-    def __init__(self, client_object):
+    def __init__(self, controller_object):
         '''Creates `BaseCommand` instance with given `client_object`.'''
 
         object.__init__(self)
-        self.client = client_object
+        self.controller = controller_object
+
+    def execute(self, *args, **kwargs):
+
+        raise NotImplementedError('`BaseCommand.execute` is abstract.')
 
 
 class ConnCommand(BaseCommand):
 
-    pass
+    def execute(self, ip, port):
+
+        self.controller.assertNotConnected()
+        self.controller.connect(ip, port)
 
 
 class SignInCommand(BaseCommand):
@@ -35,6 +52,11 @@ class SignOutCommand(BaseCommand):
     pass
 
 
+class SendCommand(BaseCommand):
+
+    pass
+
+
 class ReceiveCommand(BaseCommand):
 
     pass
@@ -43,6 +65,13 @@ class ReceiveCommand(BaseCommand):
 class RegisterUserCommand(BaseCommand):
 
     pass
+
+
+class ExitCommand(BaseCommand):
+
+    def execute(self):
+
+        print ""
 
 
 _ADDITIONAL_WORDCHARS = '.+=-'
@@ -82,9 +111,10 @@ def argument_extractor(fn):
                 req_given_args.append(token)
 
         argspec = inspect.getargspec(fn)
-        defaults_len = len(argspec.defaults)
-        req_fn_arg_names = argspec.args[:-defaults_len]
-        opt_fn_arg_names = argspec.args[-defaults_len:]
+        defaults_len = len(argspec.defaults or [])
+        args = argspec.args or []
+        req_fn_arg_names = args[:-defaults_len]
+        opt_fn_arg_names = args[-defaults_len:]
 
         # All required arguments should be given.
         if len(req_fn_arg_names) - 1 != len(req_given_args):
