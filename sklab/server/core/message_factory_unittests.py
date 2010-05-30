@@ -21,6 +21,7 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(len(msg_list), 1)
         msg = msg_list[0]
         self.assertEqual(msg.msg_id, ConnectionRequestMessage.msg_id)
+        self.assertEqual(msg.data.message_id, ConnectionRequestMessage.msg_id)
         
 
 if __name__ == '__main__':
