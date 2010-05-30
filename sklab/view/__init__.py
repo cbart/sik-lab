@@ -104,6 +104,8 @@ class TermClient(cmd.Cmd):
                (defaults to 127.0.0.1)
              port - node's listening port (defaults to 1138)
         '''
+        command = RegisterUserCommand(self.controller)
+        command.execute(login, password, ip, port)
 
     def do_EOF(self, line):
         '''Quits the terminal.

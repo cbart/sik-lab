@@ -19,6 +19,22 @@ class P2PController:
         if self.connection is not None:
             raise ControllerError("Already connected")
 
+    def assertConnected(self):
+
+        if self.connection is None:
+            raise ControllerError("Not connected")
+
+    def assertNotSignedIn(self):
+
+        if self.userdata is not None:
+            raise ControllerError("Already signed in")
+
+    def assertSignedIn(self):
+
+        if self.userdata is None:
+            raise ControllerError("Not signed in")
+
+    #TODO
     def connect(self, ip, port):
 
-        pass
+        self.connection = 1

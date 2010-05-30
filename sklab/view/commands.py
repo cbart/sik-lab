@@ -21,6 +21,7 @@ __all__ = ['argument_extractor',
         'ExitCommand',
         ]
 
+
 class BaseCommand(object):
 
     def __init__(self, controller_object):
@@ -44,27 +45,35 @@ class ConnCommand(BaseCommand):
 
 class SignInCommand(BaseCommand):
 
-    pass
+    def execute(self, login, password):
+
+        self.controller.assertConnected()
+        self.controller.assertNotSignedIn()
+        self.controller.singIn(login, password)
 
 
 class SignOutCommand(BaseCommand):
 
-    pass
+    def execute(self):
+        pass
 
 
 class SendCommand(BaseCommand):
 
-    pass
+    def execute(self, login, content):
+        pass
 
 
 class ReceiveCommand(BaseCommand):
 
-    pass
+    def execute(self):
+        pass
 
 
 class RegisterUserCommand(BaseCommand):
 
-    pass
+    def execute(self, login, password, ip, port):
+        pass
 
 
 class ExitCommand(BaseCommand):
